@@ -55,6 +55,7 @@ express()
   .get('/fullhouse', async (req, res) => {
   //const { url } = req.query;
     const url = 'https://www.fullstory.com'
+    console.log('starting....')
 
   if (!url) {
     console.error('URL is required');
