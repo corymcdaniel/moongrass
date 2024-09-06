@@ -37,7 +37,7 @@ const runLighthouse = async (url) => {
 
     const results = runnerResult.lhr;
     await browser.close();
-    return { results };
+    return { results, report };
   } catch (error) {
     console.error('Error running Lighthouse:', error);
     if (browser) {
@@ -64,11 +64,11 @@ express()
 
   try {
     console.log(`Running Lighthouse for URL: ${url}`);
-    const { results } = await runLighthouse(url);
+    const { results, report } = await runLighthouse(url);
 
     console.log('Sending results:', results);
 
-    return res.status(200).json({ results });
+    return res.status(200).json({ results, report });
   } catch (error) {
     console.error('Error in serverless handler:', error);
     return res.status(500).json({ error: error.message });
