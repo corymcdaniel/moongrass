@@ -1,7 +1,7 @@
 {
-  "name": "node-js-getting-started",
-  "version": "0.3.0",
-  "description": "A sample Node.js app using Express 4",
+  "name": "moongrass",
+  "version": "0.0.1",
+  "description": "A lighthouse endpoint for testing",
   "engines": {
     "node": "20.x"
   },
@@ -11,15 +11,18 @@
     "test": "node test.js"
   },
   "dependencies": {
+    "@sparticuz/chromium": "^127.0.0",
     "ejs": "^3.1.9",
-    "express": "^4.15.2"
+    "express": "^4.15.2",
+    "lighthouse": "^12.2.1",
+    "puppeteer-core": "^23.3.0"
   },
   "devDependencies": {
     "tape": "^5.7.4"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/heroku/node-js-getting-started"
+    "url": "https://github.com/corymcdaniel/moongrass"
   },
   "keywords": [
     "node",
