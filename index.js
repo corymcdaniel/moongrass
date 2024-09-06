@@ -1,12 +1,12 @@
 const express = require('express')
 const path = require('path')
-const lighthouse = require('lighthouse');
 const puppeteer = require('puppeteer-core');
 const chromium = require('@sparticuz/chromium');
 
 const PORT = process.env.PORT || 5001
 
 const runLighthouse = async (url) => {
+  const { default: lighthouse } = await import('lighthouse');
   let browser;
   try {
     browser = await puppeteer.launch({
