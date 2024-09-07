@@ -25,9 +25,12 @@ const runLighthouse = async (url) => {
       maxWaitForLoad: 50000,
       port: port,
     };
+    console.log('loading browser....')
+    console.log(options);
 
     const runnerResult = await lighthouse(url, options);
-
+    console.log('retrieved report....');
+    console.log(typeof runnerResult.report)
     const report =
       typeof runnerResult.report !== 'string' ? JSON.stringify(runnerResult.report, null, 2) : runnerResult.report;
 
