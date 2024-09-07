@@ -4,6 +4,7 @@ const puppeteer = require('puppeteer-core');
 const chromium = require('@sparticuz/chromium');
 
 const PORT = process.env.PORT || 5001
+let report;
 
 const runLighthouse = async (url) => {
   const { default: lighthouse } = await import('lighthouse');
@@ -31,7 +32,7 @@ const runLighthouse = async (url) => {
     const runnerResult = await lighthouse(url, options);
     console.log('retrieved report....');
     console.log(typeof runnerResult.report)
-    const report =
+    report =
       typeof runnerResult.report !== 'string' ? JSON.stringify(runnerResult.report, null, 2) : runnerResult.report;
 
     if (!runnerResult || !report) {
@@ -77,4 +78,7 @@ express()
     return res.status(500).json({ error: error.message });
   }
 })
+  .get('/report', async (req,res) => {
+    return res.status(200).json({report})
+  })
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
