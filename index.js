@@ -5,6 +5,7 @@ const chromium = require('@sparticuz/chromium');
 const fsReport = require('./db/fs-run.json')
 
 const PORT = process.env.PORT || 5001
+let reportDB = {};
 let report;
 
 // const runLighthouse = async (url) => {
@@ -75,11 +76,18 @@ express()
     return res.status(400).json({ error: 'URL is required' });
   }
 
+  //check database:
+  if (reportDB[url]) {
+    console.log(`sending stored report for ${url}`)
+    return res.status(200).json(reportDB[url]);
+  }
+
   try {
     console.log(`Running Lighthouse for URL: ${url}`);
     const newReport = await runLighthouse(url);
 
-    console.log('Sending results:');
+    console.log('Storing and sending results');
+    reportDB[url] = newReport;
 
     return res.status(200).json(newReport);
   } catch (error) {
