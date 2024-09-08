@@ -57,8 +57,8 @@ express()
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
   .get('/fullhouse', async (req, res) => {
-  //const { url } = req.query;
-    const url = 'https://www.fullstory.com'
+    const { url } = req.query;
+    //const url = 'https://www.fullstory.com'
     console.log('starting....')
 
   if (!url) {
