@@ -2,14 +2,23 @@ const express = require('express')
 const path = require('path')
 const puppeteer = require('puppeteer-core');
 const chromium = require('@sparticuz/chromium');
+const fsReport = require('./db/fs-run.json')
 
 const PORT = process.env.PORT || 5001
 let report;
 
+// const runLighthouse = async (url) => {
+//   return {report: fsReport};
+// }
+
 const runLighthouse = async (url) => {
+  //return {report: fsReport};
   const { default: lighthouse } = await import('lighthouse');
   let browser;
   try {
+    //await chromium.executablePath(
+    //         "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    //       )
     browser = await puppeteer.launch({
       args: chromium.args,
       defaultViewport: chromium.defaultViewport,
@@ -32,8 +41,7 @@ const runLighthouse = async (url) => {
     const runnerResult = await lighthouse(url, options);
     console.log('retrieved report....');
     console.log(typeof runnerResult.report)
-    report =
-      typeof runnerResult.report !== 'string' ? JSON.stringify(runnerResult.report, null, 2) : runnerResult.report;
+    report = runnerResult.report;
 
     if (!runnerResult || !report) {
       throw new Error('Lighthouse did not return a valid report');
@@ -41,7 +49,8 @@ const runLighthouse = async (url) => {
 
     const results = runnerResult.lhr;
     await browser.close();
-    return { results, report };
+    // just return the json report in full:
+    return report;
   } catch (error) {
     console.error('Error running Lighthouse:', error);
     if (browser) {
@@ -68,17 +77,17 @@ express()
 
   try {
     console.log(`Running Lighthouse for URL: ${url}`);
-    const { results, report } = await runLighthouse(url);
+    const newReport = await runLighthouse(url);
 
-    console.log('Sending results:', results);
+    console.log('Sending results:');
 
-    return res.status(200).json({ results, report });
+    return res.status(200).json(newReport);
   } catch (error) {
     console.error('Error in serverless handler:', error);
     return res.status(500).json({ error: error.message });
   }
 })
   .get('/report', async (req,res) => {
-    return res.status(200).json({report})
+    return res.status(200).json(fsReport)
   })
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
