@@ -3,6 +3,7 @@ const path = require('path')
 const puppeteer = require('puppeteer-core');
 const chromium = require('@sparticuz/chromium');
 const fsReport = require('./db/fs-run.json')
+const autoconfigure = require('./tools/autoconfigure')
 
 const PORT = process.env.PORT || 5001
 let reportDB = {};
@@ -39,7 +40,7 @@ const runLighthouse = async (url) => {
     console.log('loading browser....')
     console.log(options);
 
-    const runnerResult = await lighthouse(url, options);
+    const runnerResult = await lighthouse(url, options, autoconfigure);
     console.log('retrieved report....');
     console.log(typeof runnerResult.report)
     report = runnerResult.report;
