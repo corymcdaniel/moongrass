@@ -3,6 +3,7 @@ const path = require('path')
 const puppeteer = require('puppeteer-core');
 const chromium = require('@sparticuz/chromium');
 const fsReport = require('./db/fs-run.json')
+const fullhouseReport = require('./db/fullhouse.json');
 
 const PORT = process.env.PORT || 5001
 let reportDB = {};
@@ -99,5 +100,8 @@ express()
 })
   .get('/report', async (req,res) => {
     return res.status(200).json(fsReport)
+  })
+  .get('/fhreport', async (req,res) => {
+    return res.status(200).json(fullhouseReport)
   })
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
