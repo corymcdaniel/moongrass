@@ -27,6 +27,14 @@ export default {
     title: '',
     description: ''
   },
+  'search-visibility-and-navigation': {
+    title: '',
+    description: '',
+  },
+  'data-richness': {
+    title: '',
+    description: ''
+  },
   'accessibility': {
     title: '',
     description: ''

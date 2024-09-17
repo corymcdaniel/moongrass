@@ -1,18 +1,21 @@
 import groups from './groups.mjs';
 import performanceCategories, {performanceAuditRefs} from './performance.mjs'
 import securityAudits, {securityAuditRefList} from "./security.mjs";
+import searchAuditRefs, {searchAuditRefList} from "./search.mjs";
+import dataRichnessAuditRefs, {dataRichnessRefList} from "./data-richness.mjs";
 const test = performanceCategories
 
 const config = {
-  extends: 'lighthouse:default', // Extends the default configuration
+  extends: 'lighthouse:default',
   onlyCategories: [
     'engagement-and-retention',
     'user-frustration-mitigation',
     'practices-and-efficiency',
-    'performance',
+    //'performance',
     'best-practices',
+    'security-and-trust',
     'seo',
-    'accessibility'
+    'data-richness'
   ],
 
   onlyAudits: [
@@ -20,10 +23,9 @@ const config = {
 
     ...securityAuditRefList,
 
-    'meta-description','document-title','link-text','is-crawlable',
+    ...searchAuditRefList,
 
-    'crawlable-anchors','image-alt','uses-passive-event-listeners','doctype'
-
+    ...dataRichnessRefList
   ],
 
   groups: groups,
@@ -73,22 +75,16 @@ const config = {
     // 15% SEO (Search Visibility and Navigation)
     seo: {
       auditRefs: [
-        { id: 'meta-description', weight: 1, group: 'seo' }, // Meta tags
-        { id: 'document-title', weight: 1, group: 'seo' }, // Page titles
-        { id: 'link-text', weight: 1, group: 'seo' }, // Descriptive links
-        { id: 'is-crawlable', weight: 1, group: 'seo' }, // Placeholder for structured data
+        ...searchAuditRefs
       ],
     },
 
     // 20% Data Richness (Custom Category)
-    accessibility: { //'data-richness'
+    'data-richness': { //'data-richness'
       title: 'Data Richness',
       description: 'Audits for data richness and element indexability',
       auditRefs: [
-        { id: 'crawlable-anchors', weight: 1, group: 'accessibility' }, // Indexed elements
-        { id: 'image-alt', weight: 1, group: 'accessibility' }, // Named element (Image Alt)
-        { id: 'uses-passive-event-listeners', weight: 1, group: 'accessibility' }, // Passive event listeners
-        { id: 'doctype', weight: 1, group: 'accessibility' }, // Placeholder for data layers
+        ...dataRichnessAuditRefs
       ],
     }
   },
