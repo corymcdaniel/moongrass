@@ -1,13 +1,15 @@
-const express = require('express')
-const path = require('path')
+import mapResultsToResponse from './tools/mapResultsToResponse';
+
+const express = require('express');
+const path = require('path');
 const puppeteer = require('puppeteer-core');
 const chromium = require('@sparticuz/chromium');
-const fsReport = require('./db/fs-run.json')
+const fsReport = require('./db/fs-run.json');
 const fullhouseReport = require('./db/fullhouse.json');
 
-const PORT = process.env.PORT || 5001
-let reportDB = {};
-let report;
+const PORT = process.env.PORT || 5001;
+let mappedReportDB = {};
+let mappedReport;
 
 // const runLighthouse = async (url) => {
 //   return {report: fsReport};
@@ -39,13 +41,13 @@ const runLighthouse = async (url) => {
       maxWaitForLoad: 50000,
       port: port,
     };
-    console.log('loading browser....')
+    console.log('loading browser....');
     console.log(options);
 
     const runnerResult = await lighthouse(url, options, autoconfigure);
     console.log('retrieved report....');
-    console.log(typeof runnerResult.report)
-    report = runnerResult.report;
+    console.log(typeof runnerResult.report);
+    const report = runnerResult.report;
 
     if (!runnerResult || !report) {
       throw new Error('Lighthouse did not return a valid report');
@@ -54,7 +56,8 @@ const runLighthouse = async (url) => {
     const results = runnerResult.lhr;
     await browser.close();
     // just return the json report in full:
-    return report;
+    mappedReport = mapResultsToResponse(report);
+    return mappedReport;
   } catch (error) {
     console.error('Error running Lighthouse:', error);
     if (browser) {
@@ -72,36 +75,36 @@ express()
   .get('/fullhouse', async (req, res) => {
     const { url } = req.query;
     //const url = 'https://www.fullstory.com'
-    console.log('starting....')
+    console.log('starting....');
 
-  if (!url) {
-    console.error('URL is required');
-    return res.status(400).json({ error: 'URL is required' });
-  }
+    if (!url) {
+      console.error('URL is required');
+      return res.status(400).json({ error: 'URL is required' });
+    }
 
-  //check database:
-  if (reportDB[url]) {
-    console.log(`sending stored report for ${url}`)
-    return res.status(200).json(reportDB[url]);
-  }
+    //check database:
+    if (mappedReportDB[url]) {
+      console.log(`sending stored report for ${url}`);
+      return res.status(200).json(mappedReportDB[url]);
+    }
 
-  try {
-    console.log(`Running Lighthouse for URL: ${url}`);
-    const newReport = await runLighthouse(url);
+    try {
+      console.log(`Running Lighthouse for URL: ${url}`);
+      const newReport = await runLighthouse(url);
 
-    console.log('Storing and sending results');
-    reportDB[url] = newReport;
+      console.log('Storing and sending results');
+      mappedReportDB[url] = newReport;
 
-    return res.status(200).json(newReport);
-  } catch (error) {
-    console.error('Error in serverless handler:', error);
-    return res.status(500).json({ error: error.message });
-  }
-})
-  .get('/report', async (req,res) => {
-    return res.status(200).json(fsReport)
+      return res.status(200).json(newReport);
+    } catch (error) {
+      console.error('Error in serverless handler:', error);
+      return res.status(500).json({ error: error.message });
+    }
   })
-  .get('/fhreport', async (req,res) => {
-    return res.status(200).json(fullhouseReport)
+  .get('/report', async (req, res) => {
+    return res.status(200).json(fsReport);
   })
-  .listen(PORT, () => console.log(`Listening on ${ PORT }`))
+  .get('/fhreport', async (req, res) => {
+    return res.status(200).json(fullhouseReport);
+  })
+  .listen(PORT, () => console.log(`Listening on ${PORT}`));
