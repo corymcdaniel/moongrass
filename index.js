@@ -22,7 +22,9 @@ const performance = (results) => {
   const enr = (results.categories?.['engagement-and-retention']?.score || 0) * 0.3;
   const ufm = (results.categories?.['user-frustration-mitigation']?.score || 0) * 0.5;
   const pne = (results.categories?.['practices-and-efficiency']?.score || 0) * 0.2;
-  return enr + ufm + pne;
+  const sum = enr + ufm + pne;
+  console.log(`sum: ${sum}`);
+  return sum;
 };
 
 const security = (results) => results.categories?.['security-and-trust']?.score || 0;
@@ -33,7 +35,7 @@ const dataRichness = (results) => results.categories?.['data-richness']?.score |
 
 const mapResultsToResponse = (results) => {
   if (!results || !results.categories) {
-    console.log(results);
+    console.log(JSON.stringify(results));
     console.log(`Could not find results...`);
     return null;
   }
@@ -47,7 +49,7 @@ const mapResultsToResponse = (results) => {
     ],
   };
 
-  console.log(`Sending score results: ${response}`);
+  console.log(`Sending score results: ${JSON.stringify(response)}`);
   return response;
 };
 
@@ -93,7 +95,7 @@ const runLighthouse = async (url) => {
     await browser.close();
     // just return the json report in full:
     try {
-      mappedReport = mapResultsToResponse(JSON.parse(report));
+      mappedReport = mapResultsToResponse(report);
     } catch (e) {
       if (browser) await browser.close();
       console.log(`Error mapping: ${url}`);
@@ -132,6 +134,7 @@ express()
     console.log(`keys: ${keys}`);
     if (mappedReportDB[url]) {
       console.log(`sending stored report for ${url}`);
+      console.log(JSON.stringify(mappedReportDB[url]));
       return res.status(200).json(mappedReportDB[url]);
     }
 
