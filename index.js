@@ -133,10 +133,12 @@ express()
       keys.push(key);
     }
     console.log(`keys: ${keys}`);
-    if (mappedReportDB[url]) {
+    const saved = mappedReportDB[url];
+    console.log(`type of saved: ${typeof saved}`);
+    if (saved) {
       console.log(`sending stored report for ${url}`);
-      console.log(JSON.stringify(mappedReportDB[url]));
-      return res.status(200).json(mappedReportDB[url]);
+      console.log(JSON.stringify(saved));
+      return res.status(200).json(saved);
     }
 
     try {
