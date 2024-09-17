@@ -33,6 +33,7 @@ const dataRichness = (results) => results.categories?.['data-richness']?.score |
 
 const mapResultsToResponse = (results) => {
   if (!results || !results.categories) {
+    console.log(results);
     console.log(`Could not find results...`);
     return null;
   }
@@ -92,11 +93,11 @@ const runLighthouse = async (url) => {
     await browser.close();
     // just return the json report in full:
     try {
-      mappedReport = mapResultsToResponse(report);
+      mappedReport = mapResultsToResponse(JSON.parse(report));
     } catch (e) {
       if (browser) await browser.close();
       console.log(`Error mapping: ${url}`);
-      console.error(e);
+      throw e;
     }
     return mappedReport;
   } catch (error) {
