@@ -16,7 +16,7 @@ const seo = (results) => results.categories?.seo?.score || 0;
 
 const dataRichness = (results) => results.categories?.['data-richness']?.score || 0;
 
-export default (results) => {
+exports.default = (results) => {
   if (!results || !results.categories) return null;
 
   const response = {

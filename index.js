@@ -1,4 +1,4 @@
-import mapResultsToResponse from './tools/mapResultsToResponse';
+const mapResultsToResponse = require('./tools/mapResultsToResponse');
 
 const express = require('express');
 const path = require('path');
