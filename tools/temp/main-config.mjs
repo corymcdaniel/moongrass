@@ -30,38 +30,38 @@ const config = {
   categories: {
     // 50% Performance
     ...performanceCategories,
-    performance: {
-      auditRefs: [
-        // 15% of Performance (5% each of total score)
-        { id: 'first-contentful-paint', weight: 1, group: 'metrics' },
-        { id: 'speed-index', weight: 1, group: 'metrics' },
-        { id: 'largest-contentful-paint', weight: 1, group: 'metrics' },
-
-        // 25% of Performance (8.33% each of total score)
-        { id: 'total-blocking-time', weight: 1, group: 'metrics' },
-        { id: 'cumulative-layout-shift', weight: 1, group: 'metrics' },
-        // Mobile Friendliness:
-        { id: 'uses-responsive-images', weight: 1, group: 'mobile-friendliness' },
-        { id: 'viewport', weight: 1, group: 'mobile-friendliness' },
-        //{ id: 'tap-targets', weight: 1, group: 'mobile-friendliness' },
-        { id: 'first-contentful-paint', weight: 1, group: 'mobile-friendliness' },
-        { id: 'largest-contentful-paint', weight: 1, group: 'mobile-friendliness' },
-        { id: 'offscreen-images', weight: 1, group: 'mobile-friendliness' },
-        { id: 'uses-optimized-images', weight: 1, group: 'mobile-friendliness' },
-        { id: 'unused-css-rules', weight: 1, group: 'mobile-friendliness' },
-        { id: 'unused-javascript', weight: 1, group: 'mobile-friendliness' },
-        { id: 'meta-viewport', weight: 1, group: 'mobile-friendliness' },
-        { id: 'font-size', weight: 1, group: 'mobile-friendliness' },
-        //{ id: 'estimated-input-latency', weight: 1, group: 'mobile-friendliness' },
-
-
-        // 10% of Performance (2.5% each of total score)
-        { id: 'unminified-javascript', weight: 1, group: 'metrics' }, // Placeholder for modern JS
-        { id: 'efficient-animated-content', weight: 1, group: 'metrics' }, // Efficient resources
-        { id: 'errors-in-console', weight: 1, group: 'metrics' }, // Console data capture
-        { id: 'total-byte-weight', weight: 1, group: 'metrics' }, // Network data capture
-      ],
-    },
+    // performance: {
+    //   auditRefs: [
+    //     // 15% of Performance (5% each of total score)
+    //     { id: 'first-contentful-paint', weight: 1, group: 'metrics' },
+    //     { id: 'speed-index', weight: 1, group: 'metrics' },
+    //     { id: 'largest-contentful-paint', weight: 1, group: 'metrics' },
+    //
+    //     // 25% of Performance (8.33% each of total score)
+    //     { id: 'total-blocking-time', weight: 1, group: 'metrics' },
+    //     { id: 'cumulative-layout-shift', weight: 1, group: 'metrics' },
+    //     // Mobile Friendliness:
+    //     { id: 'uses-responsive-images', weight: 1, group: 'mobile-friendliness' },
+    //     { id: 'viewport', weight: 1, group: 'mobile-friendliness' },
+    //     //{ id: 'tap-targets', weight: 1, group: 'mobile-friendliness' },
+    //     { id: 'first-contentful-paint', weight: 1, group: 'mobile-friendliness' },
+    //     { id: 'largest-contentful-paint', weight: 1, group: 'mobile-friendliness' },
+    //     { id: 'offscreen-images', weight: 1, group: 'mobile-friendliness' },
+    //     { id: 'uses-optimized-images', weight: 1, group: 'mobile-friendliness' },
+    //     { id: 'unused-css-rules', weight: 1, group: 'mobile-friendliness' },
+    //     { id: 'unused-javascript', weight: 1, group: 'mobile-friendliness' },
+    //     { id: 'meta-viewport', weight: 1, group: 'mobile-friendliness' },
+    //     { id: 'font-size', weight: 1, group: 'mobile-friendliness' },
+    //     //{ id: 'estimated-input-latency', weight: 1, group: 'mobile-friendliness' },
+    //
+    //
+    //     // 10% of Performance (2.5% each of total score)
+    //     { id: 'unminified-javascript', weight: 1, group: 'metrics' }, // Placeholder for modern JS
+    //     { id: 'efficient-animated-content', weight: 1, group: 'metrics' }, // Efficient resources
+    //     { id: 'errors-in-console', weight: 1, group: 'metrics' }, // Console data capture
+    //     { id: 'total-byte-weight', weight: 1, group: 'metrics' }, // Network data capture
+    //   ],
+    // },
 
     // 15% Security and Trust
     'security-and-trust': {
