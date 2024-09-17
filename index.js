@@ -32,7 +32,10 @@ const seo = (results) => results.categories?.seo?.score || 0;
 const dataRichness = (results) => results.categories?.['data-richness']?.score || 0;
 
 const mapResultsToResponse = (results) => {
-  if (!results || !results.categories) return null;
+  if (!results || !results.categories) {
+    console.log(`Could not find results...`);
+    return null;
+  }
 
   const response = {
     categories: [
@@ -85,10 +88,16 @@ const runLighthouse = async (url) => {
       throw new Error('Lighthouse did not return a valid report');
     }
 
-    const results = runnerResult.lhr;
+    //const results = runnerResult.lhr;
     await browser.close();
     // just return the json report in full:
-    mappedReport = mapResultsToResponse(report);
+    try {
+      mappedReport = mapResultsToResponse(report);
+    } catch (e) {
+      if (browser) await browser.close();
+      console.log(`Error mapping: ${url}`);
+      console.error(e);
+    }
     return mappedReport;
   } catch (error) {
     console.error('Error running Lighthouse:', error);
@@ -107,7 +116,7 @@ express()
   .get('/fullhouse', async (req, res) => {
     const { url } = req.query;
     //const url = 'https://www.fullstory.com'
-    console.log('starting....');
+    console.log(`starting for ${url}....`);
 
     if (!url) {
       console.error('URL is required');
@@ -115,6 +124,11 @@ express()
     }
 
     //check database:
+    let keys = [];
+    for (let key in mappedReportDB) {
+      keys.push(key);
+    }
+    console.log(`keys: ${keys}`);
     if (mappedReportDB[url]) {
       console.log(`sending stored report for ${url}`);
       return res.status(200).json(mappedReportDB[url]);
