@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "A lighthouse endpoint for testing",
   "engines": {
-    "node": "20.x"
+    "node": "18.17.0"
   },
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,7 @@
     "@sparticuz/chromium": "^127.0.0",
     "ejs": "^3.1.9",
     "express": "^4.15.2",
-    "lighthouse": "^12.2.1",
+    "lighthouse": "^12.2.0",
     "puppeteer-core": "^23.3.0"
   },
   "devDependencies": {
