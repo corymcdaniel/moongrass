@@ -41,6 +41,7 @@ const mapResultsToResponse = (results) => {
   }
 
   const response = {
+    finalDisplayedUrl: results.finalDisplayedUrl,
     categories: [
       { performance: performance(results) },
       { 'best-practices': security(results) },
