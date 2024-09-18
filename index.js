@@ -138,7 +138,7 @@ express()
     if (saved) {
       console.log(`sending stored report for ${url}`);
       console.log(JSON.stringify(saved));
-      return res.status(200).send(saved);
+      return res.status(200).json(saved);
     }
 
     try {
