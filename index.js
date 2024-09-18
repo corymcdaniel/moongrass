@@ -6,6 +6,8 @@ const fsReport = require('./db/fs-run.json');
 const fullhouseReport = require('./db/fullhouse.json');
 
 const PORT = process.env.PORT || 5001;
+
+let reportDB = {};
 let mappedReportDB = {};
 let mappedReport;
 
@@ -97,13 +99,14 @@ const runLighthouse = async (url) => {
     // just return the json report in full:
     try {
       const parsed = JSON.parse(report);
+      reportDB[url] = parsed;
       mappedReport = mapResultsToResponse(parsed);
     } catch (e) {
       if (browser) await browser.close();
       console.log(`Error mapping: ${url}`);
       throw e;
     }
-    return mappedReport;
+    return { ...mappedReport, more: reportDB[url] };
   } catch (error) {
     console.error('Error running Lighthouse:', error);
     if (browser) {
