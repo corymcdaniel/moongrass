@@ -45,10 +45,10 @@ const mapResultsToResponse = (results) => {
   const response = {
     finalDisplayedUrl: results.finalDisplayedUrl,
     categories: {
-      performance: performance(results),
-      'best-practices': security(results),
-      seo: seo(results),
-      accessibility: dataRichness(results),
+      performance: { score: performance(results) },
+      'best-practices': { score: security(results) },
+      seo: { score: seo(results) },
+      accessibility: { score: dataRichness(results) },
     },
   };
 
