@@ -44,12 +44,12 @@ const mapResultsToResponse = (results) => {
 
   const response = {
     finalDisplayedUrl: results.finalDisplayedUrl,
-    categories: [
-      { performance: performance(results) },
-      { 'best-practices': security(results) },
-      { seo: seo(results) },
-      { accessibility: dataRichness(results) },
-    ],
+    categories: {
+      performance: performance(results),
+      'best-practices': security(results),
+      seo: seo(results),
+      accessibility: dataRichness(results),
+    },
   };
 
   console.log(`Sending score results: ${JSON.stringify(response)}`);
