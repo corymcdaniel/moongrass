@@ -3,6 +3,10 @@ export default {
     title: '',
     description: ''
   },
+  'practices-and-efficiency': {
+    title: '',
+    description: '',
+  },
   'mobile-friendliness': {
     title: '',
     description: '',

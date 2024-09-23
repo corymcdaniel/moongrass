@@ -2,10 +2,10 @@ const category = {
   'practices-and-efficiency': {
     auditRefs: [
       //Modern Javascript:
-      { id: 'unused-javascript', weight: 1, group: 'metrics' },
-      { id: 'unminified-javascript', weight: 1, group: 'metrics' },
-      { id: 'uses-passive-event-listeners', weight: 1, group: 'metrics' },
-      { id: 'third-party-summary', weight: 1, group: 'metrics' },
+      { id: 'unused-javascript', weight: 1, group: 'practices-and-efficiency' },
+      { id: 'unminified-javascript', weight: 1, group: 'practices-and-efficiency' },
+      { id: 'uses-passive-event-listeners', weight: 1, group: 'practices-and-efficiency' },
+      { id: 'third-party-summary', weight: 1, group: 'practices-and-efficiency' },
 
       // Efficient resources
       { id: 'efficient-animated-content', weight: 1, group: 'efficient-resources' },
