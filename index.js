@@ -101,6 +101,7 @@ const runLighthouse = async (url) => {
       const parsed = JSON.parse(report);
       reportDB[url] = parsed;
       mappedReport = mapResultsToResponse(parsed);
+      mappedReportDB[url] = mappedReport;
     } catch (e) {
       if (browser) await browser.close();
       console.log(`Error mapping: ${url}`);
