@@ -21,12 +21,16 @@ const performance = (results) => {
     'user-frustration-mitigation',
     'practices-and-efficiency',
    */
-  const enr = (results.categories?.['engagement-and-retention']?.score || 0) * 0.3;
-  const ufm = (results.categories?.['user-frustration-mitigation']?.score || 0) * 0.5;
-  const pne = (results.categories?.['practices-and-efficiency']?.score || 0) * 0.2;
-  const sum = enr + ufm + pne;
-  console.log(`sum: ${sum}`);
-  return sum;
+  try {
+    const enr = (results.categories?.['engagement-and-retention']?.score || 0) * 0.3;
+    const ufm = (results.categories?.['user-frustration-mitigation']?.score || 0) * 0.5;
+    const pne = (results.categories?.['practices-and-efficiency']?.score || 0) * 0.2;
+    const sum = enr + ufm + pne;
+    console.log(`sum: ${sum}, enr: ${enr}, ufm: ${ufm}, pne: ${pne}`);
+    return sum;
+  } catch (e) {
+    console.log(`Error: ${e}`);
+  }
 };
 
 const security = (results) => results.categories?.['security-and-trust']?.score || 0;
