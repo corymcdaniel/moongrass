@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const puppeteer = require('puppeteer-core');
 const chromium = require('@sparticuz/chromium');
-//const chromeLauncher = require('chrome-launcher');
+
 const fsReport = require('./db/fs-run.json');
 const fullhouseReport = require('./db/fullhouse.json');
 
@@ -68,26 +68,30 @@ const runLighthouse = async (url) => {
   const autoconfigure = (await import('./tools/temp/main-config.mjs')).default;
 
   let browser;
+  let port;
   try {
     //await chromium.executablePath(
     //         "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
     //       )
-    // browser = await puppeteer.launch({
-    //   args: chromium.args,
-    //   defaultViewport: chromium.defaultViewport,
-    //   executablePath: await chromium.executablePath(),
-    //   headless: chromium.headless,
-    // });
-    const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
-
-    //const wsEndpoint = browser.wsEndpoint();
-    //const { port } = new URL(wsEndpoint);
+    if (!process.env.USE_LOCAL) {
+      browser = await puppeteer.launch({
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath(),
+        headless: chromium.headless,
+      });
+      const wsEndpoint = browser.wsEndpoint();
+      port = new URL(wsEndpoint);
+    } else {
+      browser = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
+      port = browser.port;
+    }
 
     const options = {
       logLevel: 'info',
       output: 'json',
       maxWaitForLoad: 50000,
-      port: chrome.port,
+      port,
     };
     console.log('loading browser....');
     console.log(options);
@@ -102,7 +106,7 @@ const runLighthouse = async (url) => {
     }
 
     //const results = runnerResult.lhr;
-    if (browser) {
+    if (browser && browser.close) {
       await browser.close();
     }
     // just return the json report in full:
@@ -112,14 +116,14 @@ const runLighthouse = async (url) => {
       mappedReport = mapResultsToResponse(parsed);
       mappedReportDB[url] = mappedReport;
     } catch (e) {
-      if (browser) await browser.close();
+      if (browser && browser.close) await browser.close();
       console.log(`Error mapping: ${url}`);
       throw e;
     }
     return { ...mappedReport, more: reportDB[url] };
   } catch (error) {
     console.error('Error running Lighthouse:', error);
-    if (browser) {
+    if (browser && browser.close) {
       await browser.close();
     }
     throw error;
