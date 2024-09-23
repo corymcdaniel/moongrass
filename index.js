@@ -81,7 +81,8 @@ const runLighthouse = async (url) => {
         headless: chromium.headless,
       });
       const wsEndpoint = browser.wsEndpoint();
-      port = new URL(wsEndpoint);
+      const epUrl = new URL(wsEndpoint);
+      port = epUrl.port;
     } else {
       browser = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
       port = browser.port;
