@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const puppeteer = require('puppeteer-core');
 const chromium = require('@sparticuz/chromium');
+//const chromeLauncher = require('chrome-launcher');
 const fsReport = require('./db/fs-run.json');
 const fullhouseReport = require('./db/fullhouse.json');
 
@@ -62,6 +63,7 @@ const mapResultsToResponse = (results) => {
 
 const runLighthouse = async (url) => {
   //return {report: fsReport};
+  const chromeLauncher = await import('chrome-launcher');
   const { default: lighthouse } = await import('lighthouse');
   const autoconfigure = (await import('./tools/temp/main-config.mjs')).default;
 
@@ -70,21 +72,22 @@ const runLighthouse = async (url) => {
     //await chromium.executablePath(
     //         "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
     //       )
-    browser = await puppeteer.launch({
-      args: chromium.args,
-      defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath(),
-      headless: chromium.headless,
-    });
+    // browser = await puppeteer.launch({
+    //   args: chromium.args,
+    //   defaultViewport: chromium.defaultViewport,
+    //   executablePath: await chromium.executablePath(),
+    //   headless: chromium.headless,
+    // });
+    const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
 
-    const wsEndpoint = browser.wsEndpoint();
-    const { port } = new URL(wsEndpoint);
+    //const wsEndpoint = browser.wsEndpoint();
+    //const { port } = new URL(wsEndpoint);
 
     const options = {
       logLevel: 'info',
       output: 'json',
       maxWaitForLoad: 50000,
-      port: port,
+      port: chrome.port,
     };
     console.log('loading browser....');
     console.log(options);
@@ -99,7 +102,9 @@ const runLighthouse = async (url) => {
     }
 
     //const results = runnerResult.lhr;
-    await browser.close();
+    if (browser) {
+      await browser.close();
+    }
     // just return the json report in full:
     try {
       const parsed = JSON.parse(report);
