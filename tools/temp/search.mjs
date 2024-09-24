@@ -7,7 +7,7 @@ export const searchAuditRefs = [
   // Page Title
   { id: 'document-title', weight: 1, group: 'search-visibility-and-navigation' },
   ...descriptiveLinks,
-  //...structuredData
+  ...structuredData
 ]
 
 export const searchAuditRefList = searchAuditRefs.map(a => a.id)
