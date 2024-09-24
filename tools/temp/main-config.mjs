@@ -21,7 +21,7 @@ const config = {
     'engagement-and-retention',
     'user-frustration-mitigation',
     'practices-and-efficiency',
-    //'performance',
+
     'best-practices',
     'security-and-trust',
     'search-visibility-and-nav',

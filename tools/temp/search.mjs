@@ -5,7 +5,7 @@ import structuredData from "./search/structured-data.mjs";
 export const searchAuditRefs = [
   ...metaTagAudits,
   // Page Title
-  //{ id: 'document-title', weight: 1, group: 'search-visibility-and-navigation' },
+  { id: 'document-title', weight: 1, group: 'search-visibility-and-navigation' },
   //...descriptiveLinks,
   //...structuredData
 ]
