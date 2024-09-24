@@ -36,7 +36,7 @@ const performance = (results) => {
 
 const security = (results) => results.categories?.['security-and-trust']?.score || 0;
 
-const seo = (results) => results.categories?.seo?.score || 0;
+const seo = (results) => results.categories?.['search-visibility-and-nav']?.score || 0;
 
 const dataRichness = (results) => results.categories?.['data-richness']?.score || 0;
 

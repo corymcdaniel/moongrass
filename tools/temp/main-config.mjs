@@ -5,6 +5,16 @@ import searchAuditRefs, {searchAuditRefList} from "./search.mjs";
 import dataRichnessAuditRefs, {dataRichnessRefList} from "./data-richness.mjs";
 const test = performanceCategories
 
+const auditList = [
+  ...performanceAuditRefs,
+
+  ...securityAuditRefList,
+
+  ...searchAuditRefList,
+
+  ...dataRichnessRefList
+];
+
 const config = {
   extends: 'lighthouse:default',
   onlyCategories: [
@@ -14,19 +24,11 @@ const config = {
     //'performance',
     'best-practices',
     'security-and-trust',
-    'seo',
+    'search-visibility-and-nav',
     'data-richness'
   ],
 
-  onlyAudits: [
-    ...performanceAuditRefs,
-
-    ...securityAuditRefList,
-
-    ...searchAuditRefList,
-
-    ...dataRichnessRefList
-  ],
+  onlyAudits: [...new Set(auditList)],
 
   groups: groups,
   categories: {
@@ -73,7 +75,7 @@ const config = {
     },
 
     // 15% SEO (Search Visibility and Navigation)
-    seo: {
+    'search-visibility-and-nav': {
       auditRefs: [
         ...searchAuditRefs
       ],
