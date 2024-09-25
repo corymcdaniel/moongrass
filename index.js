@@ -179,4 +179,16 @@ express()
   .get('/fhreport', async (req, res) => {
     return res.status(200).json(fullhouseReport);
   })
+  .get('/poll', async (req, res) => {
+    const url = req.query?.url;
+    if (!url) {
+      return res.status(400).json({ error: 'Missing url' });
+    }
+    if (mappedReportDB[url]) {
+      return res.status(200).json(mappedReportDB[url]);
+    }
+    if (!mappedReportDB[url]) {
+      return res.status(404).send();
+    }
+  })
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
