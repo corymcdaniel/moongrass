@@ -15,7 +15,7 @@
     "chrome-launcher": "^1.1.2",
     "ejs": "^3.1.9",
     "express": "^4.15.2",
-    "lighthouse": "^12.2.0",
+    "lighthouse": "^12.2.1",
     "puppeteer-core": "23.4.0"
   },
   "devDependencies": {

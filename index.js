@@ -65,7 +65,7 @@ const runLighthouse = async (url) => {
   //return {report: fsReport};
   const chromeLauncher = await import('chrome-launcher');
   const { default: lighthouse } = await import('lighthouse');
-  const autoconfigure = (await import('./tools/temp/main-config.mjs')).default;
+  const autoconfigure = (await import('./tools/fullhouse/main-config.mjs')).default;
 
   let browser;
   let port;

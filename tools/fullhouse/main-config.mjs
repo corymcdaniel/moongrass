@@ -1,10 +1,16 @@
-import groups from './groups.mjs';
-import performanceCategories, {performanceAuditRefs} from './performance.mjs'
-import securityAudits, {securityAuditRefList} from "./security.mjs";
-import searchAuditRefs, {searchAuditRefList} from "./search.mjs";
-import dataRichnessAuditRefs, {dataRichnessRefList} from "./data-richness.mjs";
-const test = performanceCategories
-
+import groups from './configs/groups.mjs';
+import performanceCategories, {performanceAuditRefs} from './configs/performance.mjs'
+import securityAudits, {securityAuditRefList} from "./configs/security.mjs";
+import searchAuditRefs, {searchAuditRefList} from "./configs/search.mjs";
+import dataRichnessAuditRefs, {dataRichnessRefList} from "./configs/data-richness.mjs";
+import {
+  AriaAttributeGatherer,
+  AriaRoleAttributeGatherer,
+  DataAttributeGatherer,
+  ElementAttributesGatherer
+} from "./gather/element-attributes.mjs";
+import AriaAttributesAudit from "./audits/aria-attributes.mjs";
+import FirstContentfulPaint from "lighthouse/core/audits/metrics/first-contentful-paint.js";
 const auditList = [
   ...performanceAuditRefs,
 
@@ -25,56 +31,53 @@ const config = {
     'best-practices',
     'security-and-trust',
     'search-visibility-and-nav',
-    'data-richness'
+    'data-richness',
   ],
 
-  onlyAudits: [...new Set(auditList)],
+  // DOES NOT WORK:
+  // passes: [{
+  //   passName: 'defaultPass',
+  //   gatherers: [
+  //     //'./tools/fullhouse/gather/element-attributes.mjs',
+  //     ElementAttributesGatherer,
+  //     AriaAttributeGatherer,
+  //     AriaRoleAttributeGatherer,
+  //     DataAttributeGatherer
+  //   ],
+  // }],
 
+  // Required for custom audits/gathers
+  // artifacts: [
+  //   {id: 'ElementAttributes', gatherer: ElementAttributesGatherer},
+  //   {id: 'AriaAttributes', gatherer: AriaAttributeGatherer},
+  //   {id: 'AriaRoleAttributes', gatherer: AriaRoleAttributeGatherer},
+  //   {id: 'DataAttributes', gatherer: DataAttributeGatherer},
+  // ],
+
+  audits: [
+    ...auditList,
+    //{id: 'fs-aria-attributes', path: './tools/fullhouse/audits/aria-attributes.mjs'}
+  ],
+
+  //onlyAudits: [...new Set(auditList), {path: "../audits/aria-attributes.mjs"}],
+  onlyAudits: [
+    ...new Set(auditList),
+    //'fs-aria-attributes'
+  ],
+  //onlyAudits: ['fs-aria-attributes'],
   groups: groups,
   categories: {
-    // 50% Performance
+    // // 50% Performance
     ...performanceCategories,
-    // performance: {
-    //   auditRefs: [
-    //     // 15% of Performance (5% each of total score)
-    //     { id: 'first-contentful-paint', weight: 1, group: 'metrics' },
-    //     { id: 'speed-index', weight: 1, group: 'metrics' },
-    //     { id: 'largest-contentful-paint', weight: 1, group: 'metrics' },
     //
-    //     // 25% of Performance (8.33% each of total score)
-    //     { id: 'total-blocking-time', weight: 1, group: 'metrics' },
-    //     { id: 'cumulative-layout-shift', weight: 1, group: 'metrics' },
-    //     // Mobile Friendliness:
-    //     { id: 'uses-responsive-images', weight: 1, group: 'mobile-friendliness' },
-    //     { id: 'viewport', weight: 1, group: 'mobile-friendliness' },
-    //     //{ id: 'tap-targets', weight: 1, group: 'mobile-friendliness' },
-    //     { id: 'first-contentful-paint', weight: 1, group: 'mobile-friendliness' },
-    //     { id: 'largest-contentful-paint', weight: 1, group: 'mobile-friendliness' },
-    //     { id: 'offscreen-images', weight: 1, group: 'mobile-friendliness' },
-    //     { id: 'uses-optimized-images', weight: 1, group: 'mobile-friendliness' },
-    //     { id: 'unused-css-rules', weight: 1, group: 'mobile-friendliness' },
-    //     { id: 'unused-javascript', weight: 1, group: 'mobile-friendliness' },
-    //     { id: 'meta-viewport', weight: 1, group: 'mobile-friendliness' },
-    //     { id: 'font-size', weight: 1, group: 'mobile-friendliness' },
-    //     //{ id: 'estimated-input-latency', weight: 1, group: 'mobile-friendliness' },
-    //
-    //
-    //     // 10% of Performance (2.5% each of total score)
-    //     { id: 'unminified-javascript', weight: 1, group: 'metrics' }, // Placeholder for modern JS
-    //     { id: 'efficient-animated-content', weight: 1, group: 'metrics' }, // Efficient resources
-    //     { id: 'errors-in-console', weight: 1, group: 'metrics' }, // Console data capture
-    //     { id: 'total-byte-weight', weight: 1, group: 'metrics' }, // Network data capture
-    //   ],
-    // },
-
-    // 15% Security and Trust
+    // // 15% Security and Trust
     'security-and-trust': {
       auditRefs: [
         ...securityAudits,
       ],
     },
-
-    // 15% SEO (Search Visibility and Navigation)
+    //
+    // // 15% SEO (Search Visibility and Navigation)
     'search-visibility-and-nav': {
       auditRefs: [
         ...searchAuditRefs
@@ -86,7 +89,9 @@ const config = {
       title: 'Data Richness',
       description: 'Audits for data richness and element indexability',
       auditRefs: [
-        ...dataRichnessAuditRefs
+        ...dataRichnessAuditRefs,
+        //{ id: 'first-contentful-paint', weight: 1, groups: ['performance','engagement-and-retention'] },
+        //{id: 'fs-aria-attributes', weight: 1, group: 'data-richness'}
       ],
     }
   },
